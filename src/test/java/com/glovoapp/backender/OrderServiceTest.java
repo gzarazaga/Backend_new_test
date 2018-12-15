@@ -1,9 +1,8 @@
 package com.glovoapp.backender;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -14,9 +13,9 @@ import static org.mockito.Mockito.when;
 public class OrderServiceTest {
     private OrderService orderService;
     private CourierRepository courierRepository;
-    private OrderRepository orderRepository;
+    private  OrderRepository orderRepository;
 
-    @BeforeAll
+    @BeforeEach
     public void init() {
         this.courierRepository = Mockito.mock(CourierRepository.class);
         this.orderRepository = Mockito.mock(OrderRepository.class);
@@ -33,6 +32,6 @@ public class OrderServiceTest {
         List<Order> courierOrders = orderService.getOrdersBuCourier(courierId);
 
         assertNotNull(courierOrders);
-
+        courierOrders.stream().forEach(System.out::println);
     }
 }

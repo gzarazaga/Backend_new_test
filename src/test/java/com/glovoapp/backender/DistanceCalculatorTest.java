@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DistanceCalculatorTest {
+public class DistanceCalculatorTest {
     @Test
     public void smokeTest() {
         Location francescMacia = new Location(41.3925603, 2.1418532);

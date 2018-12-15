@@ -1,3 +1,5 @@
 com\glovoapp\backender\DistanceCalculatorTest.class
+com\glovoapp\backender\OrderServiceTest.class
 com\glovoapp\backender\CourierRepositoryTest.class
+com\glovoapp\backender\BackenderTestUtils.class
 com\glovoapp\backender\OrderRepositoryTest.class
