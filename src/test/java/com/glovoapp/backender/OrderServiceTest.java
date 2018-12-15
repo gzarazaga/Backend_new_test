@@ -32,6 +32,5 @@ public class OrderServiceTest {
         List<Order> courierOrders = orderService.getOrdersBuCourier(courierId);
 
         assertNotNull(courierOrders);
-        courierOrders.stream().forEach(System.out::println);
     }
 }

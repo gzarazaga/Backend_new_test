@@ -21,7 +21,7 @@ public class OrderService {
         List<Order> courierOrders = new ArrayList<>();
 
         Courier courier = courierRepository.findById(courierId);
-        List<Order> allOrders = orderRepository.findAll();
+        courierOrders = orderRepository.findAll();
 
         /*
         - If the description of the order contains the words pizza, cake or flamingo,

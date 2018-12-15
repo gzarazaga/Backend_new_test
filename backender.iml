@@ -64,5 +64,6 @@
     <orderEntry type="library" name="Maven: net.bytebuddy:byte-buddy:1.7.11" level="project" />
     <orderEntry type="library" name="Maven: net.bytebuddy:byte-buddy-agent:1.7.11" level="project" />
     <orderEntry type="library" name="Maven: org.objenesis:objenesis:2.6" level="project" />
+    <orderEntry type="library" name="com.kncept.junit5.reporter:junit-reporter:1.0.2" level="project" />
   </component>
 </module>
