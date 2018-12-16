@@ -6,6 +6,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -13,24 +14,61 @@ import static org.mockito.Mockito.when;
 public class OrderServiceTest {
     private OrderService orderService;
     private CourierRepository courierRepository;
-    private  OrderRepository orderRepository;
+    private OrderRepository orderRepository;
 
     @BeforeEach
     public void init() {
         this.courierRepository = Mockito.mock(CourierRepository.class);
         this.orderRepository = Mockito.mock(OrderRepository.class);
 
-        this.orderService = new OrderService(courierRepository, orderRepository);
+        this.orderService = new OrderService(courierRepository, orderRepository, new OrderValidator());
     }
 
     @Test
-    public void findOrdersByCourierTest() {
+    public void findPizzaOrdersByCourierWithBoxTest() {
+        orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator());
         String courierId = "1";
-        Courier courier = BackenderTestUtils.createCourier(courierId);
+        Courier courier = BackenderTestUtils.createCourier(courierId, true);
+
         when(courierRepository.findById(eq(courierId))).thenReturn(courier);
 
-        List<Order> courierOrders = orderService.getOrdersBuCourier(courierId);
+        List<Order> courierOrders = orderService.getOrdersByCourier(courierId);
 
         assertNotNull(courierOrders);
+
+        Order firstOrder = courierOrders.get(0);
+
+        Order expected = new Order().withId("order-1")
+                .withDescription("I want a pizza cut into very small slices")
+                .withFood(true)
+                .withVip(false)
+                .withPickup(new Location(41.3965463, 2.1963997))
+                .withDelivery(new Location(41.407834, 2.1675979));
+
+        assertEquals(expected, firstOrder);
+    }
+
+    @Test
+    public void findPizzaOrdersByCourierWithoutBoxTest() {
+        orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator());
+        String courierId = "1";
+        Courier courier = BackenderTestUtils.createCourier(courierId, false);
+
+        when(courierRepository.findById(eq(courierId))).thenReturn(courier);
+
+        List<Order> courierOrders = orderService.getOrdersByCourier(courierId);
+
+        assertNotNull(courierOrders);
+
+        Order firstOrder = courierOrders.get(0);
+
+        Order expected = new Order().withId("order-2")
+                .withDescription("Bring me a huuuudge hamburguer")
+                .withFood(true)
+                .withVip(false)
+                .withPickup(new Location(41.3965463, 2.1963997))
+                .withDelivery(new Location(41.407834, 2.1675979));
+
+        assertEquals(expected, firstOrder);
     }
 }

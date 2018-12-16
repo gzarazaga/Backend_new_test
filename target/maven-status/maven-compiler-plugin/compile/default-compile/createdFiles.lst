@@ -1,4 +1,5 @@
 com\glovoapp\backender\OrderVM.class
+com\glovoapp\backender\OrderValidator.class
 com\glovoapp\backender\CourierRepository$1.class
 com\glovoapp\backender\Courier.class
 com\glovoapp\backender\OrderRepository$1.class

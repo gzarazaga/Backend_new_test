@@ -5,34 +5,40 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.glovoapp.backender.CourierRepository;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
     private CourierRepository courierRepository;
     private OrderRepository orderRepository;
+    private OrderValidator orderValidator;
 
     @Autowired
-    public OrderService (CourierRepository courierRepository, OrderRepository orderRespository){
+    public OrderService (CourierRepository courierRepository, OrderRepository orderRespository, OrderValidator orderValidator){
         this.courierRepository = courierRepository;
         this.orderRepository = orderRespository;
+        this.orderValidator = orderValidator;
     }
-    public List<Order> getOrdersBuCourier(String courierId) {
+    public List<Order> getOrdersByCourier(String courierId) {
         List<Order> courierOrders = new ArrayList<>();
 
         Courier courier = courierRepository.findById(courierId);
         courierOrders = orderRepository.findAll();
 
-        /*
-        - If the description of the order contains the words pizza, cake or flamingo,
-        we can only show the order to the courier if they are equipped with a Glovo box.
+        List<Order> validatedOrder = getValidatedOrders(courierOrders, courier);
 
-                - If the order is further than 5km to the courier, we will only show it to
-        couriers that move in motorcycle or electric scooter.
-        */
-
-        return courierOrders;
+        return validatedOrder;
     }
+
+    private List<Order> getValidatedOrders(List<Order> orders, Courier courier) {
+        List<Order> validatedOrders = new ArrayList<>();
+
+        validatedOrders = orders.stream().filter(o -> orderValidator.validateBox(o, courier.getBox())).collect(Collectors.toList());
+        validatedOrders = validatedOrders.stream().filter(o -> orderValidator.validateDistance(o, courier.getLocation(), courier.getVehicle())).collect(Collectors.toList());
+
+        return validatedOrders;
+    }
+
 
 
 }
