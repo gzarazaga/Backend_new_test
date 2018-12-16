@@ -26,5 +26,19 @@
       "lat": 41.407834,
       "lon": 2.1675979
     }
+  },
+  {
+    "id": "order-3",
+    "description": "Could you please by me a sandwich?",
+    "food": true,
+    "vip": false,
+    "pickup": {
+      "lat": 41.451980,
+      "lon": 2.2069379
+    },
+    "delivery": {
+      "lat": 41.407834,
+      "lon": 2.1675979
+    }
   }
 ]

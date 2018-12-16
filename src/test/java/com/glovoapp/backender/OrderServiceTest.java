@@ -49,10 +49,11 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void findPizzaOrdersByCourierWithoutBoxTest() {
+    public void findPizzaOrdersMoreThanFiveKmsTest() {
         orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator());
         String courierId = "1";
-        Courier courier = BackenderTestUtils.createCourier(courierId, false);
+        Courier courier = BackenderTestUtils.createCourier(courierId, true);
+        courier.withVehicle(Vehicle.BICYCLE);
 
         when(courierRepository.findById(eq(courierId))).thenReturn(courier);
 
@@ -62,6 +63,17 @@ public class OrderServiceTest {
 
         Order firstOrder = courierOrders.get(0);
 
+        Order firstExpected = new Order().withId("order-1")
+                .withDescription("I want a pizza cut into very small slices")
+                .withFood(true)
+                .withVip(false)
+                .withPickup(new Location(41.3965463, 2.1963997))
+                .withDelivery(new Location(41.407834, 2.1675979));
+
+        Order secondOrder = courierOrders.get(1);
+
+        assertEquals(firstExpected, firstOrder);
+
         Order expected = new Order().withId("order-2")
                 .withDescription("Bring me a huuuudge hamburguer")
                 .withFood(true)
@@ -69,6 +81,33 @@ public class OrderServiceTest {
                 .withPickup(new Location(41.3965463, 2.1963997))
                 .withDelivery(new Location(41.407834, 2.1675979));
 
-        assertEquals(expected, firstOrder);
+        assertEquals(expected, secondOrder);
+        assertEquals(2, courierOrders.size());
+    }
+
+    @Test
+    public void findPizzaOrdersMoreThanFiveKmsWIthMotorcycleTest() {
+        orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator());
+        String courierId = "1";
+        Courier courier = BackenderTestUtils.createCourier(courierId, true);
+        courier.withVehicle(Vehicle.MOTORCYCLE);
+
+        when(courierRepository.findById(eq(courierId))).thenReturn(courier);
+
+        List<Order> courierOrders = orderService.getOrdersByCourier(courierId);
+
+        assertNotNull(courierOrders);
+
+        Order thirthOrder = courierOrders.get(2);
+
+        Order expected = new Order().withId("order-3")
+                .withDescription("Could you please by me a sandwich?")
+                .withFood(true)
+                .withVip(false)
+                .withPickup(new Location(41.451980, 2.2069379))
+                .withDelivery(new Location(41.407834, 2.1675979));
+
+        assertEquals(expected, thirthOrder);
+        assertEquals(3, courierOrders.size());
     }
 }
