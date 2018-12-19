@@ -21,12 +21,12 @@ public class OrderServiceTest {
         this.courierRepository = Mockito.mock(CourierRepository.class);
         this.orderRepository = Mockito.mock(OrderRepository.class);
 
-        this.orderService = new OrderService(courierRepository, orderRepository, new OrderValidator());
+        this.orderService = new OrderService(courierRepository, orderRepository, new OrderValidator(), new OrderPrioritizer());
     }
 
     @Test
     public void findPizzaOrdersByCourierWithBoxTest() {
-        orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator());
+        orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator(), new OrderPrioritizer());
         String courierId = "1";
         Courier courier = BackenderTestUtils.createCourier(courierId, true);
 
@@ -50,7 +50,7 @@ public class OrderServiceTest {
 
     @Test
     public void findPizzaOrdersMoreThanFiveKmsTest() {
-        orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator());
+        orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator(), new OrderPrioritizer());
         String courierId = "1";
         Courier courier = BackenderTestUtils.createCourier(courierId, true);
         courier.withVehicle(Vehicle.BICYCLE);
@@ -86,8 +86,8 @@ public class OrderServiceTest {
     }
 
     @Test
-    public void findPizzaOrdersMoreThanFiveKmsWIthMotorcycleTest() {
-        orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator());
+    public void findPizzaOrdersMoreThanFiveKmsWithMotorcycleTest() {
+        orderService = new OrderService(courierRepository, new OrderRepository(), new OrderValidator(), new OrderPrioritizer());
         String courierId = "1";
         Courier courier = BackenderTestUtils.createCourier(courierId, true);
         courier.withVehicle(Vehicle.MOTORCYCLE);
