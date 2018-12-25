@@ -27,12 +27,12 @@ public class OrderService {
         Courier courier = courierRepository.findById(courierId);
         courierOrders = orderRepository.findAll();
 
-        List<Order> validatedOrder = getValidatedOrders(courierOrders, courier);
+        List<Order> validatedOrder = getCourierOrders(courierOrders, courier);
 
         return validatedOrder;
     }
 
-    private List<Order> getValidatedOrders(List<Order> orders, Courier courier) {
+    private List<Order> getCourierOrders(List<Order> orders, Courier courier) {
         List<Order> validatedOrders = new ArrayList<>();
         List<Order> prioritizedOrders = new ArrayList<>();
 
